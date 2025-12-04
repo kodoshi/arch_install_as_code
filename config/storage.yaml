@@ -1,0 +1,33 @@
+storage:
+  efi_size_mib: 1024
+  suggested_target_disk: /dev/nvme0n1  # adjust as needed
+
+  luks:
+    type: luks2
+    cipher: aes-xts-plain64
+    key_size: 512
+    hash: sha512
+    pbkdf: argon2id
+    pbkdf_memory: 1048576
+    pbkdf_parallel: 4
+    pbkdf_time_ms: 4000
+
+  btrfs:
+    label: archroot
+    subvolumes:
+      - name: "@root"
+        mountpoint: /
+      - name: "@home"
+        mountpoint: /home
+      - name: "@srv"
+        mountpoint: /srv
+      - name: "@var"
+        mountpoint: /var
+      - name: "@log"
+        mountpoint: /var/log
+      - name: "@cache"
+        mountpoint: /var/cache
+      - name: "@tmp"
+        mountpoint: /var/tmp
+      - name: "@snapshots"
+        mountpoint: /.snapshots

@@ -1,0 +1,17 @@
+kernels:
+  - name: hardened
+    package: linux-hardened
+  - name: mainline
+    package: linux
+  - name: lts
+    package: linux-lts
+
+variants:
+  - suffix: default
+    params: ""
+  - suffix: no-dc
+    params: "amdgpu.dc=0"
+  - suffix: no-runpm
+    params: "amdgpu.runpm=0"
+  - suffix: no-dc-no-runpm
+    params: "amdgpu.dc=0 amdgpu.runpm=0"

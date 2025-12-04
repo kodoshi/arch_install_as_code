@@ -1,0 +1,24 @@
+hooks:
+  - base
+  - systemd
+  - autodetect
+  - modconf
+  - kms
+  - keyboard
+  - sd-vconsole
+  - sd-encrypt
+  - block
+  - filesystems
+  - fsck
+
+modules:
+  nouveau:
+    - nouveau
+  nvidia-dkms:
+    - nvidia
+    - nvidia_modeset
+    - nvidia_uvm
+    - nvidia_drm
+  nvidia-open:
+    - nvidia
+    - nvidia_modeset

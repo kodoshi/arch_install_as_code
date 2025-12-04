@@ -1,0 +1,8 @@
+system:
+  hostname: archrog
+  timezone: Europe/Paris
+  locale: en_US.UTF-8
+  keymap: us
+  user:
+    name: user
+    groups: [wheel]

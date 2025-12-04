@@ -1,0 +1,40 @@
+packages:
+  base:
+    - base
+    - base-devel
+    - linux
+    - linux-hardened
+    - linux-lts
+    - linux-firmware
+    - btrfs-progs
+    - cryptsetup
+    - sudo
+    - vim
+    - networkmanager
+    - sbctl
+    - reflector
+    - git
+    - openssh
+    - intel-ucode
+    - amd-ucode
+
+  desktop:
+    kde:
+      - plasma
+      - kde-applications
+    gnome:
+      - gnome
+
+  display_manager:
+    - sddm
+
+  gpu:
+    nouveau:
+      - mesa
+      - xf86-video-nouveau
+    nvidia-dkms:
+      - nvidia-dkms
+      - nvidia-utils
+    nvidia-open:
+      - nvidia-open
+      - nvidia-utils

@@ -1,0 +1,3 @@
+gpu:
+  vendor: nvidia
+  driver: nouveau  # nouveau | nvidia-dkms | nvidia-open
