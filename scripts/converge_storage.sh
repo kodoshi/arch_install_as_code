@@ -1,6 +1,53 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
+# Function to securely wipe the disk
+wipe_disk() {
+  local disk="$1"
+  echo ">>> Preparing to wipe $disk..."
+
+  # Unmount everything just in case
+  umount -R /mnt 2>/dev/null || true
+  swapoff -a 2>/dev/null || true
+
+  echo ""
+  echo "Select wipe method for $disk:"
+  echo "1) Quick Wipe (Zap partition table only)"
+  echo "2) Secure Wipe (Fill with random data - Slow, best for encryption)"
+  echo "3) SSD Discard (blkdiscard - Fast, leaks usage patterns)"
+  echo "4) Skip Wipe"
+  read -rp "Enter choice [1-4]: " choice
+
+  case $choice in
+    2)
+      echo ">>> Filling disk with random data (via temporary LUKS container)..."
+      # Open disk with a random key
+      cryptsetup open --type plain --key-file /dev/random "$disk" container
+      # Fill with zeros (which become random on disk)
+      dd if=/dev/zero of=/dev/mapper/container bs=1M status=progress || true
+      # Close container
+      cryptsetup close container
+      ;;
+    3)
+      echo ">>> Discarding blocks..."
+      blkdiscard -f "$disk" || echo "blkdiscard failed."
+      ;;
+    4)
+      echo ">>> Skipping wipe."
+      return 0
+      ;;
+    *)
+      echo ">>> Performing quick partition table wipe..."
+      ;;
+  esac
+
+  # Always zap the partition table to ensure a clean slate
+  sgdisk -Z "$disk"
+  wipefs -a "$disk"
+  partprobe "$disk"
+  sleep 2
+}
+
 # Function to converge storage configuration
 # This script handles disk partitioning, LUKS encryption, BTRFS formatting, and subvolume creation.
 # It attempts to be idempotent by checking if the device is already set up.

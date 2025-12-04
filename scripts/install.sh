@@ -67,6 +67,7 @@ else
     # Not mounted, so we choose a disk and converge storage
     if confirm_step "Disk Selection & Storage Setup" "This step will allow you to select a disk, partition it (EFI + LUKS), format it (BTRFS), and mount subvolumes. \nWARNING: This can be destructive if you choose to wipe."; then
         choose_target_disk
+        wipe_disk "$TARGET_DISK"
         converge_storage "$TARGET_DISK"
     fi
 fi
