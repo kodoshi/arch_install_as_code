@@ -15,13 +15,24 @@ choose_target_disk() {
     lsblk -no NAME,SIZE,FSTYPE,MOUNTPOINT,UUID "$d" | sed 's/^/    /'
   done
 
-  read -rp "Select disk index to WIPE: " idx
+  read -rp "Select disk index to WIPE (the index number): " idx
+
+  if ! [[ "$idx" =~ ^[0-9]+$ ]]; then
+    echo "Error: Invalid input. Please enter a number."
+    exit 1
+  fi
+
+  if [[ -z "${DISKS[$idx]:-}" ]]; then
+    echo "Error: Invalid selection. Index out of bounds."
+    exit 1
+  fi
+
   TARGET_DISK="/dev/${DISKS[$idx]}"
 
   echo "Selected: $TARGET_DISK"
   read -rp "Type '$TARGET_DISK' to confirm: " c1
   [[ "$c1" == "$TARGET_DISK" ]] || exit 1
 
-  read -rp "Type WIPE-THIS-DISK to continue: " c2
-  [[ "$c2" == "WIPE-THIS-DISK" ]] || exit 1
+  read -rp "Type WIPE-DISK to continue: " c2
+  [[ "$c2" == "WIPE-DISK" ]] || exit 1
 }

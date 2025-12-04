@@ -44,7 +44,7 @@ converge_storage() {
             --pbkdf argon2id \
             --pbkdf-memory 1048576 \
             --pbkdf-parallel 4 \
-            --pbkdf-time 4000 \
+            --iter-time 4000 \
             "$part_root"
           cryptsetup open "$part_root" cryptroot
       fi
